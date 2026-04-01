@@ -1,0 +1,23 @@
+{
+  "data": {
+    "universe": "SP500",
+    "benchmark_ticker": "SPY",
+    "start_date": "2021-01-01",
+    "end_date": "2026-01-01",
+    "data_dir": "data",
+    "cache_file": "sp500_prices.parquet"
+  },
+  "strategy": {
+    "name": "baseline_momentum",
+    "rebalance_freq": "monthly",
+    "momentum_lookback": 252,
+    "momentum_skip": 21,
+    "top_pct": 0.20,
+    "bottom_pct": 0.20
+  },
+  "backtest": {
+    "initial_capital": 100000,
+    "risk_free_rate": 0.04,
+    "transaction_cost_bps": 10
+  }
+}
