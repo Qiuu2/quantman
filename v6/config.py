@@ -29,9 +29,9 @@ MIN_QUARTERS = 1  # SimFin 免费版数据有限，放宽到 1 个季度
 
 # ── 周频参数 ──
 FORWARD_WEEKS = 3  # ~21 交易日
-TRAIN_WINDOW_WEEKS = 104  # 2 年
-GAP_WEEKS = 3  # ~21 天
-VAL_WINDOW_WEEKS = 6  # 验证集约 6 周
+TRAIN_WINDOW_WEEKS = 78  # 1.5 年（原 104，缩小以提高预测覆盖率）
+GAP_WEEKS = 2  # ~14 天（原 3，缩小）
+VAL_WINDOW_WEEKS = 4  # 验证集约 4 周（原 6，缩小）
 
 # ── LightGBM 参数 ──
 LGB_PARAMS = {

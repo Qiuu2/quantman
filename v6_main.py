@@ -170,18 +170,17 @@ def main():
     # ── Step 4: 回测准备 ──
     logger.info("\n[Step 4/6] 回测准备...")
 
-    # 将周频预测映射到日频（前向填充）
-    # 需要将 predictions (周频 index) 扩展到日频
-    # 回测引擎用日频权重 × 日频收益
-
     # 对齐：取预测和日频价格的交集
     common_tickers = list(set(predictions.columns) & set(close_daily.columns) - {BENCHMARK_TICKER})
-    predictions_daily = predictions[common_tickers].reindex(close_daily.index).ffill()
+    predictions_aligned = predictions[common_tickers]
 
-    # 构建权重矩阵（用 construct_portfolio 需要日频因子 DataFrame）
-    weights_v6 = construct_portfolio(
-        predictions_daily, top_pct=TOP_PCT, bottom_pct=BOTTOM_PCT
+    # 构建权重矩阵：传入周频预测，construct_portfolio 内部 ffill 处理周间填充
+    weights_v6_weekly = construct_portfolio(
+        predictions_aligned, top_pct=TOP_PCT, bottom_pct=BOTTOM_PCT
     )
+
+    # 将周频权重 reindex 到日频（前向填充）
+    weights_v6 = weights_v6_weekly.reindex(close_daily.index).ffill()
 
     # 日频收益
     all_returns = compute_returns(close_daily)
@@ -216,8 +215,11 @@ def main():
         v3b_df = pd.DataFrame(
             v3b_score, index=close_weekly.index, columns=close_weekly.columns
         )
-        v3b_daily = v3b_df[common_tickers].reindex(close_daily.index).ffill()
-        weights_v3b = construct_portfolio(v3b_daily, top_pct=TOP_PCT, bottom_pct=BOTTOM_PCT)
+        # 构建周频权重，然后 reindex 到日频
+        weights_v3b_weekly = construct_portfolio(
+            v3b_df[common_tickers], top_pct=TOP_PCT, bottom_pct=BOTTOM_PCT
+        )
+        weights_v3b = weights_v3b_weekly.reindex(close_daily.index).ffill()
         r_v3b = run_backtest(
             weights=weights_v3b,
             returns=all_returns,

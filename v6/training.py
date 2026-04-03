@@ -129,9 +129,10 @@ def purged_walk_forward_train(
                 continue
 
             sampled_returns = label_row[valid_idx]
-            rank_order = np.argsort(-sampled_returns)
+            # LambdaRank: label 越大越好 → 收益越高 rank 越大
+            rank_order = np.argsort(sampled_returns)  # 升序：收益最低排第 0
             ranks = np.empty(len(valid_idx), dtype=np.float64)
-            ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)
+            ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)  # 收益最低=0，收益最高=最大值
 
             X_parts.append(feat_row[valid_idx])
             y_parts.append(ranks)
@@ -153,9 +154,10 @@ def purged_walk_forward_train(
                 continue
 
             sampled_returns = label_row[valid_idx]
-            rank_order = np.argsort(-sampled_returns)
+            # LambdaRank: label 越大越好 → 收益越高 rank 越大
+            rank_order = np.argsort(sampled_returns)  # 升序：收益最低排第 0
             ranks = np.empty(len(valid_idx), dtype=np.float64)
-            ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)
+            ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)  # 收益最低=0，收益最高=最大值
 
             X_val_parts.append(feat_row[valid_idx])
             y_val_parts.append(ranks)
@@ -269,7 +271,9 @@ def purged_walk_forward_train(
 
     if rebalance_indices:
         first_date = dates[rebalance_indices[0]]
-        pred_df.loc[pred_df.index < first_date] = 0.0
+        # 用第一个有效预测值反填训练窗口前的数据，避免大量 0 值
+        first_valid_pred = pred_df.loc[first_date]
+        pred_df.loc[pred_df.index < first_date] = first_valid_pred.values
 
     pred_df = pred_df.ffill()
 
