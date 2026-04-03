@@ -129,7 +129,9 @@ def purged_walk_forward_train(
                 continue
 
             sampled_returns = label_row[valid_idx]
-            rank_order = np.argsort(-sampled_returns)
+            # LambdaRank: higher label = more relevant = better stock
+            # So best stock (highest return) gets highest rank value
+            rank_order = np.argsort(sampled_returns)  # ascending: worst first
             ranks = np.empty(len(valid_idx), dtype=np.float64)
             ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)
 
@@ -153,7 +155,8 @@ def purged_walk_forward_train(
                 continue
 
             sampled_returns = label_row[valid_idx]
-            rank_order = np.argsort(-sampled_returns)
+            # Same fix: higher return → higher rank label
+            rank_order = np.argsort(sampled_returns)
             ranks = np.empty(len(valid_idx), dtype=np.float64)
             ranks[rank_order] = np.arange(len(valid_idx), dtype=np.float64)
 
