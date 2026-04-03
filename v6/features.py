@@ -458,7 +458,7 @@ def cross_section_zscore_3d(features_3d: np.ndarray) -> np.ndarray:
         mean = np.nanmean(row, axis=0, keepdims=True)
         std = np.nanstd(row, axis=0, keepdims=True)
         std[std < 1e-10] = 1.0  # 防止除零
-        result[t] = (row - mean) / std
+        result[t] = np.clip((row - mean) / std, -3, 3)
 
     return result
 

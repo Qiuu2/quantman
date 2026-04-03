@@ -52,7 +52,6 @@ LGB_PARAMS = {
     "reg_lambda": 2.0,
     "eval_at": [20, 50, 100],
     "max_position": 200,
-    "label_gain": list(range(1001)),  # 覆盖最大 group 大小（~767 只股票）
 }
 
 NUM_BOOST_ROUNDS = 200
@@ -63,7 +62,7 @@ TOP_PCT = 0.20
 BOTTOM_PCT = 0.20
 
 # ── EMA 平滑 ──
-SMOOTH_ALPHA = 0.35  # 新预测权重 35%，旧预测 65%
+SMOOTH_ALPHA = 0.70  # 新预测权重 70%，旧预测 30%
 
 # ── yfinance 下载参数 ──
 YF_BATCH_SIZE = 50

@@ -194,10 +194,10 @@ def purged_walk_forward_train(
         )
 
         best_iter = model.best_iteration
-        best_score = model.best_score.get("val", {}).get("ndcg", float("nan"))
+        best_score = model.best_score.get("val", {}).get("ndcg@20", float("nan"))
 
         # 记录 NDCG
-        train_ndcg = model.best_score.get("train", {}).get("ndcg", float("nan"))
+        train_ndcg = model.best_score.get("train", {}).get("ndcg@20", float("nan"))
         ndcg_train_history.append(train_ndcg)
         ndcg_val_history.append(best_score)
 
@@ -272,7 +272,7 @@ def purged_walk_forward_train(
 
     if rebalance_indices:
         first_date = dates[rebalance_indices[0]]
-        pred_df.loc[pred_df.index < first_date] = 0.0
+        pred_df.loc[pred_df.index < first_date] = np.nan
 
     pred_df = pred_df.ffill()
 
