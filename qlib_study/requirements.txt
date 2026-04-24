@@ -1,0 +1,6 @@
+pyqlib>=0.9.6
+lightgbm>=4.0.0
+torch>=2.0.0
+tensorboard
+fire
+ruamel.yaml
