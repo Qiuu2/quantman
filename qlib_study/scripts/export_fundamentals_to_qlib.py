@@ -1,5 +1,5 @@
 """
-Export v6 fundamental / sentiment / macro panels into Qlib's bin format.
+Export fundamental / sentiment / macro panels into Qlib's bin format.
 
 Qlib stores each (instrument, field) timeseries as a little-endian float32 bin
 file under provider_uri/features/<lower_ticker>/<lower_field>.day.bin. The
@@ -52,7 +52,7 @@ def load_panels(dates: pd.DatetimeIndex, tickers: list[str]) -> dict[str, pd.Dat
     Build the combined panel dict: {field_name: DataFrame(index=date, columns=ticker)}.
 
     Delegates to the existing enhanced_factors + finnhub_client + fred_client so
-    we reuse every cache and data-cleaning rule already baked into v5/v6.
+    we reuse every cache and data-cleaning rule already baked into enhanced_factors.
     """
     from enhanced_factors import (
         build_fundamental_panel_from_finnhub,

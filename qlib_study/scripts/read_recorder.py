@@ -1,5 +1,5 @@
 """
-Read a Qlib mlflow recorder and print a flat v6-style report.
+Read a Qlib mlflow recorder and print a flat baseline-style report.
 
 Usage:
     python qlib_study/scripts/read_recorder.py                 # latest baseline run
@@ -89,7 +89,7 @@ def report(rec, csv_path: Path | None) -> None:
         _kv(k, metrics.get(k))
 
     # --- portfolio metrics (TopkDropoutStrategy backtest) ------------------
-    _section("portfolio metrics  (after costs)  ←→ v6's 'Return / Sharpe / MaxDD'")
+    _section("portfolio metrics  (after costs)  ←→ baseline 'Return / Sharpe / MaxDD'")
     pf_keys = [
         ("annualized_return (no cost)", "1day.excess_return_without_cost.annualized_return"),
         ("information_ratio (no cost)", "1day.excess_return_without_cost.information_ratio"),
@@ -101,11 +101,11 @@ def report(rec, csv_path: Path | None) -> None:
     for label, key in pf_keys:
         _kv(label, metrics.get(key))
 
-    # --- daily IC time series -> mean/std/positive-rate, the v6 'IC quote' --
+    # --- daily IC time series -> mean/std/positive-rate ---------------------
     ic_ts = _safe_load(rec, "ic.pkl", sub="sig_analysis")
     if ic_ts is not None:
         s = ic_ts.dropna()
-        _section("IC time series  ←→ v6 'IC summary'")
+        _section("IC time series  ←→ baseline 'IC summary'")
         _kv("daily IC mean",  s.mean())
         _kv("daily IC std",   s.std())
         _kv("annualized ICIR", s.mean() / s.std() * np.sqrt(252) if s.std() > 0 else float("nan"))
@@ -114,7 +114,7 @@ def report(rec, csv_path: Path | None) -> None:
     # --- daily portfolio report -> turnover, cost, hit rate ----------------
     port = _safe_load(rec, "report_normal_1day.pkl", sub="portfolio_analysis")
     if port is not None:
-        _section("daily portfolio  ←→ v6 'Turnover / TC'")
+        _section("daily portfolio  ←→ baseline 'Turnover / TC'")
         _kv("avg daily return", port["return"].mean())
         _kv("avg daily bench",  port["bench"].mean())
         _kv("avg daily cost",   port.get("cost", pd.Series([np.nan])).mean())

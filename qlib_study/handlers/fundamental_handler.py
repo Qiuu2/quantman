@@ -2,8 +2,8 @@
 Alpha158Enhanced — extend Qlib's Alpha158 with fundamental + sentiment + macro factors.
 
 Learning goal: show how Qlib's expression-based feature engine composes with
-custom fields. Alpha158 covers 158 price/volume factors; we add ~15 more from
-v6's fundamental panel (roe/margin/eps_surprise/term_spread/...).
+custom fields. Alpha158 covers 158 price/volume factors; we add 18 more from
+enhanced_factors (roe/margin/eps_surprise/term_spread/...).
 
 Prerequisite: the custom fields must already exist in the qlib bin directory
 (see qlib_study/scripts/export_fundamentals_to_qlib.py). Qlib expressions
@@ -79,7 +79,7 @@ def _fundamental_fields() -> tuple[list[str], list[str]]:
 
 class Alpha158Enhanced(Alpha158):
     """
-    Alpha158 + fundamental/sentiment/macro factors from v6.
+    Alpha158 + fundamental/sentiment/macro factors from enhanced_factors.
 
     Yaml usage:
         handler:

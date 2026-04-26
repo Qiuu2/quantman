@@ -1,6 +1,6 @@
 """
 qlib_study/run.py — one-stop runner for the Alpha158 baseline / Alpha158Enhanced
-variants, with a metrics table that slots next to your v6 report.
+variants, with a metrics table that slots next to the in-house baseline report.
 
 Usage:
     python qlib_study/run.py baseline

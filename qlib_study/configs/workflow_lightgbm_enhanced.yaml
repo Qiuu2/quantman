@@ -1,4 +1,4 @@
-# Enhanced: Alpha158 + v6 fundamental/sentiment/macro fields.
+# Enhanced: Alpha158 + fundamental/sentiment/macro fields from enhanced_factors.
 # Requires that fundamental fields ($roe, $gross_margin, $eps_surprise, ...)
 # have been exported to the qlib bin dir via:
 #   python qlib_study/scripts/export_fundamentals_to_qlib.py
